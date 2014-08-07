@@ -33,7 +33,7 @@ namespace voltdb {
             m_parameterContainer(NULL)
     {
         VOLT_TRACE("SubqueryExpression %d", subqueryId);
-        m_parameterContainer = &ExecutorContext::getExecutorContext()->getParameterContainer();
+        m_parameterContainer = ExecutorContext::getExecutorContext()->getParameterContainer();
         assert((m_tveParams.get() == NULL && m_paramIdxs.empty()) ||
             (m_tveParams.get() != NULL && m_paramIdxs.size() == m_tveParams->size()));
     }
