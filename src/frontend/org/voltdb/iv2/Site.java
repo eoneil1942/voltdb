@@ -1181,6 +1181,21 @@ public class Site implements Runnable, SiteProcedureConnection, SiteSnapshotConn
     public void updateHashinator(TheHashinator hashinator)
     {
         Preconditions.checkNotNull(hashinator);
+        if (hostLog.isDebugEnabled()) {
+            StringBuilder updateInfo = new StringBuilder();
+            updateInfo.append("Updating hashinator at host ").append(getCorrespondingHostId());
+            updateInfo.append(", site ").append(m_partitionId).append('\n');
+            if (m_hashinator != null) {
+                updateInfo.append("Previous hashinator signature: ");
+                updateInfo.append(m_hashinator.pGetConfigurationSignature()).append('\n');
+            } else {
+                updateInfo.append("Previous hashinator was null\n");
+            }
+            updateInfo.append("New hashinator signature: ").append(hashinator.pGetConfigurationSignature()).append('\n');
+            StackTraceElement caller = Thread.currentThread().getStackTrace()[2];
+            updateInfo.append("Called from ").append(caller.getClassName()).append('.').append(caller.getMethodName());
+            hostLog.debug(updateInfo.toString());
+        }
         m_hashinator = hashinator;
         m_ee.updateHashinator(hashinator.pGetCurrentConfig());
     }
